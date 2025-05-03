@@ -1,4 +1,3 @@
-// Pin connections
 const int SRCLK = 27;   // clock pin
 const int RCLK = 25;  // latch pin
 const int SER = 33;  // serial data in 
@@ -13,121 +12,270 @@ void setup() {
   pinMode(SRCLK2, OUTPUT);
   pinMode(RCLK2, OUTPUT); 
   pinMode(SER2, OUTPUT); 
+  Serial.begin(9600);
 }
 
-byte leds1 = 0; 
-byte leds2 = 0;
-byte leds3 = 0;
-byte leds4 = 0;
-byte leds5 = 0;
-byte leds6 = 0;
-byte leds7 = 0;
-byte leds8 = 0;
+byte rows[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+byte rowRemap[8] = {0, 1, 2, 3, 5, 4, 7, 6};
+
+byte remap[8][8] = {
+  {7, 5, 4, 1, 0, 2, 3, 6},
+  {7, 4, 3, 0, 1, 2, 5, 6},
+  {6, 3, 2, 1, 0, 4, 5, 7},
+  {3, 5, 2, 0, 1, 4, 6, 7},
+  {5, 1, 0, 7, 6, 2, 4, 3},
+  {6, 1, 7, 0, 4, 3, 5, 2},
+  {4, 3, 5, 2, 6, 1, 7, 0},
+  {0, 7, 1, 6, 2, 5, 4, 3}
+};
 
 byte layers = 0;
+int layerRemap[8] = {3, 6, 7, 4, 5, 1, 2, 0};
 
-void runThroughColumns()
+void testPlanes()
 {
-  leds1 = 0; 
-  leds2 = 0;
-  leds3 = 0;
-  leds4 = 0;
-  leds5 = 0;
-  leds6 = 0;
-  leds7 = 0;
-  leds8 = 0;
+  int timing = 50;
+
+
+  //xy-plane
+  layers = 0;
   for(int i=0; i<8; i++)
   {
-    bitSet(leds1, i);
+    rows[i] = B11111111;
     updateShiftRegister();
-    delay(400);
   }
-  for (int i=0; i<8; i++)  // Turn all the LEDs ON one by one.
-  {
-    bitSet(leds2, i);
-    updateShiftRegister();
-    delay(400);
-  }
+
   for(int i=0; i<8; i++)
   {
-    bitSet(leds3, i);
+    bitSet(layers, layerRemap[i]);
     updateShiftRegister();
-    delay(400);
+    delay(timing);
+    bitClear(layers, layerRemap[i]);
   }
+  for(int i=6; i>=0; i--)
+  {
+    bitSet(layers, layerRemap[i]);
+    updateShiftRegister();
+    delay(timing);
+    bitClear(layers, layerRemap[i]);
+  }
+
   for(int i=0; i<8; i++)
   {
-    bitSet(leds4, i);
+    rows[i] = B00000000;
     updateShiftRegister();
-    delay(400);
   }
-  for(int i=0; i<8; i++)
+  layers = B11111111;
+
+
+
+  //xz-plane
+  for(int j=0; j<8; j++)
   {
-    bitSet(leds5, i);
-    updateShiftRegister();
-    delay(400);
+    for (int i=0; i<8; i++)
+    {
+      bitSet(rows[rowRemap[j]], remap[rowRemap[j]][i]);
+      updateShiftRegister();
+    }
+    delay(timing);
+    rows[rowRemap[j]] = 0;
   }
-  for(int i=0; i<8; i++)
+  for(int j=6; j>=0; j--)
   {
-    bitSet(leds6, i);
-    updateShiftRegister();
-    delay(400);
+    for (int i=0; i<8; i++)
+    {
+      bitSet(rows[rowRemap[j]], remap[rowRemap[j]][i]);
+      updateShiftRegister();
+    }
+    delay(timing);
+    rows[rowRemap[j]] = 0;
   }
-  for(int i=0; i<8; i++)
+
+
+
+  //yz-plane
+  for(int j=0; j<8; j++)
   {
-    bitSet(leds7, i);
-    updateShiftRegister();
-    delay(400);
+    for (int i=0; i<8; i++)
+    {
+      bitSet(rows[rowRemap[i]], remap[rowRemap[i]][j]);
+      updateShiftRegister();
+    }
+    delay(timing);
+    for(int i=0; i<8; i++)
+    {
+      bitClear(rows[rowRemap[i]], remap[rowRemap[i]][j]);
+      updateShiftRegister();
+    }
   }
-  for(int i=0; i<8; i++)
+  for(int j=6; j>=0; j--)
   {
-    bitSet(leds8, i);
-    updateShiftRegister();
-    delay(400);
+    for (int i=0; i<8; i++)
+    {
+      bitSet(rows[rowRemap[i]], remap[rowRemap[i]][j]);
+      updateShiftRegister();
+    }
+    delay(timing);
+    for(int i=0; i<8; i++)
+    {
+      bitClear(rows[rowRemap[i]], remap[rowRemap[i]][j]);
+      updateShiftRegister();
+    }
+  }
+
+  //individual leds
+  for(int j=0; j<8; j++)
+  {
+    for (int i=0; i<8; i++)
+    {
+      rows[rowRemap[j]] = 0;
+      bitSet(rows[rowRemap[j]], remap[rowRemap[j]][i]);
+      updateShiftRegister();
+      delay(50);
+    }
+    rows[rowRemap[j]] = 0;
+  }
+  
+}
+
+
+//takes coordinates and lights up that led
+void set(int x, int y, int z)
+{
+  bitSet(layers, layerRemap[z]);
+  bitSet(rows[rowRemap[x]], remap[rowRemap[x]][y]);
+  updateShiftRegister();
+}
+void clear(int x, int y, int z)
+{
+  bitClear(layers, layerRemap[z]);
+  bitClear(rows[rowRemap[x]], remap[rowRemap[x]][y]);
+  updateShiftRegister();
+}
+
+void diagonalWave(int delayTime = 100) {
+  for (int z = 0; z < 8; z++) {
+    for (int y = 0; y < 8; y++) {
+      for (int x = 0; x < 8; x++) {
+        if ((x + y + z) % 8 == 0) {
+          set(x, y, z);
+        }
+      }
+    }
+    delay(delayTime);
+    for (int y = 0; y < 8; y++) {
+      for (int x = 0; x < 8; x++) {
+        if ((x + y + z) % 8 == 0) {
+          clear(x, y, z);
+        }
+      }
+    }
   }
 }
 
+void spinningCube(int delayTime = 100) {
+  for (int size = 0; size <= 3; size++) {
+    int start = 3 - size;
+    int end = 4 + size;
+    for (int x = start; x < end; x++) {
+      for (int y = start; y < end; y++) {
+        for (int z = start; z < end; z++) {
+          set(x, y, z);
+        }
+      }
+    }
+    delay(delayTime);
+    for (int x = start; x < end; x++) {
+      for (int y = start; y < end; y++) {
+        for (int z = start; z < end; z++) {
+          clear(x, y, z);
+        }
+      }
+    }
+  }
+}
+
+void rain(int drops = 20, int delayTime = 100) {
+  for (int i = 0; i < drops; i++) {
+    int x = random(8);
+    int y = random(8);
+    for (int z = 7; z >= 0; z--) {
+      set(x, y, z);
+      delay(delayTime);
+      clear(x, y, z);
+    }
+  }
+}
+
+void expandingSphere(int delayTime = 200) {
+  float center = 3.5;
+  for (int r = 0; r < 6; r++) {
+    for (int x = 0; x < 8; x++) {
+      for (int y = 0; y < 8; y++) {
+        for (int z = 0; z < 8; z++) {
+          float dist = sqrt(pow(x - center, 2) + pow(y - center, 2) + pow(z - center, 2));
+          if (dist >= r && dist < r + 1) {
+            set(x, y, z);
+          }
+        }
+      }
+    }
+    delay(delayTime);
+    for (int x = 0; x < 8; x++) {
+      for (int y = 0; y < 8; y++) {
+        for (int z = 0; z < 8; z++) {
+          clear(x, y, z);
+        }
+      }
+    }
+  }
+}
+
+
+void lightRandom(){
+  int x = random(8);
+  int y = random(8);
+  int z = random(8);
+  Serial.print("x = ");
+  Serial.println(x);
+  Serial.print("y = ");
+  Serial.println(y);
+  Serial.print("z = ");
+  Serial.println(z);
+  set(x, y, z);
+  delay(20);
+}
 
 void loop() {
-  leds1 = 0;
-  leds2 = 0; 
-  leds3 = 0;
-  leds4 = 0;
-  leds5 = 0;
-  leds6 = 0;
-  leds7 = 0;
-  leds8 = 0;
-  layers = 0;
-  updateShiftRegister();
-
-  for(int i=0; i<8; i++)
+  for(int i=0; i<5; i++)
   {
-    bitSet(layers, i);
-    updateShiftRegister();
-    runThroughColumns();
-    delay(1000);
+    testPlanes();
   }
-
+  for(int i=0; i<5; i++)
+  {
+    rain();
+  }
+  for(int i=0; i<5; i++)
+  {
+    expandingSphere();
+  }
+  for(int i=0; i<5; i++)
+  {
+    spinningCube();
+  }
 }
 
-/*
- This function sets the latchPin to low, then calls the Arduino function 'shiftOut' to shift out contents of variable 'leds' in the shift register before putting the 'latchPin' high again.
- */
 void updateShiftRegister() {
   digitalWrite(RCLK, LOW);
-  shiftOut(SER, SRCLK, LSBFIRST, leds1);
-  shiftOut(SER, SRCLK, LSBFIRST, leds2);
-  shiftOut(SER, SRCLK, LSBFIRST, leds3);
-  shiftOut(SER, SRCLK, LSBFIRST, leds4);
-  shiftOut(SER, SRCLK, LSBFIRST, leds5);
-  shiftOut(SER, SRCLK, LSBFIRST, leds6);
-  shiftOut(SER, SRCLK, LSBFIRST, leds7);
-  shiftOut(SER, SRCLK, LSBFIRST, leds8);
+  for(int i=0; i<8; i++)
+  {
+    shiftOut(SER, SRCLK, LSBFIRST, rows[i]);
+  }
   digitalWrite(RCLK, HIGH);
 
   digitalWrite(RCLK2, LOW);
   shiftOut(SER2, SRCLK2, LSBFIRST, layers);
   digitalWrite(RCLK2, HIGH);
 }
-
 
 
