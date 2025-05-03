@@ -1,0 +1,133 @@
+// Pin connections
+const int SRCLK = 27;   // clock pin
+const int RCLK = 25;  // latch pin
+const int SER = 33;  // serial data in 
+const int SRCLK2 = 15;
+const int RCLK2 = 2;
+const int SER2 = 4;
+
+void setup() {
+  pinMode(SRCLK, OUTPUT);
+  pinMode(RCLK, OUTPUT); 
+  pinMode(SER, OUTPUT); 
+  pinMode(SRCLK2, OUTPUT);
+  pinMode(RCLK2, OUTPUT); 
+  pinMode(SER2, OUTPUT); 
+}
+
+byte leds1 = 0; 
+byte leds2 = 0;
+byte leds3 = 0;
+byte leds4 = 0;
+byte leds5 = 0;
+byte leds6 = 0;
+byte leds7 = 0;
+byte leds8 = 0;
+
+byte layers = 0;
+
+void runThroughColumns()
+{
+  leds1 = 0; 
+  leds2 = 0;
+  leds3 = 0;
+  leds4 = 0;
+  leds5 = 0;
+  leds6 = 0;
+  leds7 = 0;
+  leds8 = 0;
+  for(int i=0; i<8; i++)
+  {
+    bitSet(leds1, i);
+    updateShiftRegister();
+    delay(400);
+  }
+  for (int i=0; i<8; i++)  // Turn all the LEDs ON one by one.
+  {
+    bitSet(leds2, i);
+    updateShiftRegister();
+    delay(400);
+  }
+  for(int i=0; i<8; i++)
+  {
+    bitSet(leds3, i);
+    updateShiftRegister();
+    delay(400);
+  }
+  for(int i=0; i<8; i++)
+  {
+    bitSet(leds4, i);
+    updateShiftRegister();
+    delay(400);
+  }
+  for(int i=0; i<8; i++)
+  {
+    bitSet(leds5, i);
+    updateShiftRegister();
+    delay(400);
+  }
+  for(int i=0; i<8; i++)
+  {
+    bitSet(leds6, i);
+    updateShiftRegister();
+    delay(400);
+  }
+  for(int i=0; i<8; i++)
+  {
+    bitSet(leds7, i);
+    updateShiftRegister();
+    delay(400);
+  }
+  for(int i=0; i<8; i++)
+  {
+    bitSet(leds8, i);
+    updateShiftRegister();
+    delay(400);
+  }
+}
+
+
+void loop() {
+  leds1 = 0;
+  leds2 = 0; 
+  leds3 = 0;
+  leds4 = 0;
+  leds5 = 0;
+  leds6 = 0;
+  leds7 = 0;
+  leds8 = 0;
+  layers = 0;
+  updateShiftRegister();
+
+  for(int i=0; i<8; i++)
+  {
+    bitSet(layers, i);
+    updateShiftRegister();
+    runThroughColumns();
+    delay(1000);
+  }
+
+}
+
+/*
+ This function sets the latchPin to low, then calls the Arduino function 'shiftOut' to shift out contents of variable 'leds' in the shift register before putting the 'latchPin' high again.
+ */
+void updateShiftRegister() {
+  digitalWrite(RCLK, LOW);
+  shiftOut(SER, SRCLK, LSBFIRST, leds1);
+  shiftOut(SER, SRCLK, LSBFIRST, leds2);
+  shiftOut(SER, SRCLK, LSBFIRST, leds3);
+  shiftOut(SER, SRCLK, LSBFIRST, leds4);
+  shiftOut(SER, SRCLK, LSBFIRST, leds5);
+  shiftOut(SER, SRCLK, LSBFIRST, leds6);
+  shiftOut(SER, SRCLK, LSBFIRST, leds7);
+  shiftOut(SER, SRCLK, LSBFIRST, leds8);
+  digitalWrite(RCLK, HIGH);
+
+  digitalWrite(RCLK2, LOW);
+  shiftOut(SER2, SRCLK2, LSBFIRST, layers);
+  digitalWrite(RCLK2, HIGH);
+}
+
+
+
