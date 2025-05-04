@@ -1,0 +1,172 @@
+const int SRCLK = 27;   // clock pin
+const int RCLK = 25;  // latch pin
+const int SER = 33;  // serial data in 
+const int SRCLK2 = 15;
+const int RCLK2 = 2;
+const int SER2 = 4;
+
+
+byte frame[8][8] = {0};
+
+byte rows[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+byte rowRemap[8] = {0, 1, 2, 3, 5, 4, 7, 6};
+
+byte remap[8][8] = {
+  {7, 5, 4, 1, 0, 2, 3, 6},
+  {7, 4, 3, 0, 1, 2, 5, 6},
+  {6, 3, 2, 1, 0, 4, 5, 7},
+  {3, 5, 2, 0, 1, 4, 6, 7},
+  {5, 1, 0, 7, 6, 2, 4, 3},
+  {6, 1, 7, 0, 4, 3, 5, 2},
+  {4, 3, 5, 2, 6, 1, 7, 0},
+  {0, 7, 1, 6, 2, 5, 4, 3}
+};
+
+byte layers = 0;
+int layerRemap[8] = {3, 6, 7, 4, 5, 1, 2, 0};
+
+
+void setup() {
+  pinMode(SRCLK, OUTPUT);
+  pinMode(RCLK, OUTPUT); 
+  pinMode(SER, OUTPUT); 
+  pinMode(SRCLK2, OUTPUT);
+  pinMode(RCLK2, OUTPUT); 
+  pinMode(SER2, OUTPUT); 
+  Serial.begin(9600);
+
+  /*
+  frame[0][0] |= (1 << 0);  // LED at (0,0,0)
+  frame[1][1] |= (1 << 1);  // LED at (1,1,1)
+  frame[1][0] |= (1 << 2); // LED at (1,0,2)
+  */
+}
+
+void render(int iterations)
+{
+  for(int i=0; i<iterations; i++)
+  {
+    renderFrame();
+  }
+}
+
+void renderFrame() {
+  for(int z=0; z<8; z++)
+  {
+    layers = 0;  // Turn off all layers
+    for (int x = 0; x < 8; x++) {
+      rows[x] = 0;
+      for (int y = 0; y < 8; y++) {
+        if (frame[x][y] & (1 << z)) {
+          bitSet(rows[rowRemap[x]], remap[rowRemap[x]][y]);
+        }
+      }
+    }
+    bitSet(layers, layerRemap[z]);
+    updateShiftRegister();
+    delayMicroseconds(1000);  // Short delay for persistence
+  }
+}
+
+//takes coordinates and lights up that led
+void set(int x, int y, int z)
+{
+  frame[x][y] |= (1 << z);
+}
+
+void clear(int x, int y, int z)
+{
+  frame[x][y] &= ~(1 << z);
+}
+
+void clearCube()
+{
+  for(int x=0; x<8; x++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+}
+
+void testPlanes()
+{
+  clearCube();
+  render(300);
+  set(0,0,0);
+  set(1,0,0);
+  set(2,0,0);
+  set(3,0,0);
+  set(4,0,0);
+  set(5,0,0);
+  set(0,1,0);
+  render(300);
+  clearCube();
+
+  
+  /*
+  int timing = 100;
+
+  //xy-plane
+  for(int z=0; z<8; z++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    for(int time=0; time<100; time++)
+    {
+      renderFrame(frame);
+      delay(1);
+    }
+    for(int x=0; x<8; x++)
+    {
+      for(int y=0; y<8; y++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+  */
+
+}
+
+
+/*
+void rain(int drops = 20, int delayTime = 100) {
+  for (int i = 0; i < drops; i++) {
+    int x = random(8);
+    int y = random(8);
+    for (int z = 7; z >= 0; z--) {
+      set(x, y, z);
+      delay(delayTime);
+      clear(x, y, z);
+    }
+  }
+}
+*/
+
+void loop() {
+  testPlanes();
+}
+
+
+void updateShiftRegister() {
+  digitalWrite(RCLK, LOW);
+  for(int i=0; i<8; i++)
+  {
+    shiftOut(SER, SRCLK, LSBFIRST, rows[i]);
+  }
+  digitalWrite(RCLK, HIGH);
+
+  digitalWrite(RCLK2, LOW);
+  shiftOut(SER2, SRCLK2, LSBFIRST, layers);
+  digitalWrite(RCLK2, HIGH);
+}
