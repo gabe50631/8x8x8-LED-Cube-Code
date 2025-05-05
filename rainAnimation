@@ -1,0 +1,299 @@
+const int SRCLK = 27;   // clock pin
+const int RCLK = 25;  // latch pin
+const int SER = 33;  // serial data in 
+const int SRCLK2 = 15;
+const int RCLK2 = 2;
+const int SER2 = 4;
+
+byte frame[8][8] = {0};
+
+byte rows[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+byte rowRemap[8] = {0, 1, 2, 3, 5, 4, 7, 6};
+
+byte remap[8][8] = {
+  {7, 5, 4, 1, 0, 2, 3, 6},
+  {7, 4, 3, 0, 1, 2, 5, 6},
+  {6, 3, 2, 1, 0, 4, 5, 7},
+  {3, 5, 2, 0, 1, 4, 6, 7},
+  {5, 1, 0, 7, 6, 2, 4, 3},
+  {6, 1, 7, 0, 4, 3, 5, 2},
+  {4, 3, 5, 2, 6, 1, 7, 0},
+  {0, 7, 1, 6, 2, 5, 4, 3}
+};
+
+byte layers = 0;
+int layerRemap[8] = {3, 6, 7, 4, 5, 1, 2, 0};
+
+
+void setup() {
+  pinMode(SRCLK, OUTPUT);
+  pinMode(RCLK, OUTPUT); 
+  pinMode(SER, OUTPUT); 
+  pinMode(SRCLK2, OUTPUT);
+  pinMode(RCLK2, OUTPUT); 
+  pinMode(SER2, OUTPUT); 
+  Serial.begin(9600);
+}
+
+void render(int iterations)
+{
+  for(int i=0; i<iterations; i++)
+  {
+    renderFrame();
+  }
+}
+
+void renderFrame() {
+  for(int z=0; z<8; z++)
+  {
+    layers = 0;  // Turn off all layers
+    updateShiftRegister(); //force all layers off to avoid ghosting
+
+    //clear row data
+    for(int i=0; i<8; i++)
+    {
+      rows[i] = 0;
+    }
+
+    //build row data for current layer
+    for(int x=0; x<8; x++)
+    {
+      for(int y=0; y<8; y++)
+      {
+        if (frame[x][y] & (1 << z))
+        {
+          bitSet(rows[rowRemap[x]], remap[rowRemap[x]][y]);
+        }
+      }
+    }
+
+    //enable current layer
+    layers = 0;
+    bitSet(layers, layerRemap[z]);
+    updateShiftRegister(); //updates row and layer together
+    delayMicroseconds(50);  //delay for persistence, adjust as needed
+  }
+}
+
+//takes coordinates and lights up that led
+void set(int x, int y, int z)
+{
+  frame[x][y] |= (1 << z);
+}
+
+void clear(int x, int y, int z)
+{
+  frame[x][y] &= ~(1 << z);
+}
+
+void clearCube()
+{
+  for(int x=0; x<8; x++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+}
+
+void testPlanes()
+{
+  int timing = 50;
+
+  //xy-plane
+  for(int z=0; z<8; z++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int x=0; x<8; x++)
+    {
+      for(int y=0; y<8; y++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+  for(int z=6; z>=0; z--)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int x=0; x<8; x++)
+    {
+      for(int y=0; y<8; y++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+
+  //xz-plane
+  for(int y=0; y<8; y++)
+  {
+    for(int z=0; z<8; z++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int z=0; z<8; z++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+  for(int y=6; y>=0; y--)
+  {
+    for(int z=0; z<8; z++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int z=0; z<8; z++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+
+  //yz-plane
+  for(int x=0; x<8; x++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+  for(int x=6; x>=0; x--)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+
+}
+
+
+struct drop
+{
+  int x;
+  int y;
+  int z;
+  int renderTime;
+
+  drop(int time);
+  void initiate();
+  void update();
+};
+drop::drop(int time)
+{
+  x = random(8);
+  y = random(8);
+  z = 7;
+  renderTime = time;
+  set(x,y,z);
+  render(renderTime);
+  clear(x,y,z);
+}
+void drop::update()
+{
+  z--;
+  set(x,y,z);
+  render(renderTime);
+  clear(x,y,z);
+}
+
+void rain()
+{
+  drop drop1(20);
+  while(drop1.z > 0)
+  {
+    drop1.update();
+  }
+}
+
+/*
+void rain(int drops = 20, int delayTime = 100) {
+  for (int i = 0; i<drops; i++) {
+    int x = random(8);
+    int y = random(8);
+    Serial.println(x);
+    Serial.println(y);
+    for (int z = 7; z >= 0; z--) {
+      set(x, y, z);
+      render(delayTime);
+      clear(x, y, z);
+    }
+  }
+}
+*/
+
+
+
+void loop() {
+  rain();
+}
+
+
+void updateShiftRegister() {
+  digitalWrite(RCLK, LOW);
+  for(int i=0; i<8; i++)
+  {
+    shiftOut(SER, SRCLK, LSBFIRST, rows[i]);
+  }
+  digitalWrite(RCLK, HIGH);
+
+  digitalWrite(RCLK2, LOW);
+  shiftOut(SER2, SRCLK2, LSBFIRST, layers);
+  digitalWrite(RCLK2, HIGH);
+}
+
+
+
