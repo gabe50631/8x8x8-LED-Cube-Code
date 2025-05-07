@@ -1,0 +1,635 @@
+const int SRCLK = 27;   // clock pin
+const int RCLK = 25;  // latch pin
+const int SER = 33;  // serial data in 
+const int SRCLK2 = 15;
+const int RCLK2 = 2;
+const int SER2 = 4;
+
+byte frame[8][8] = {0};
+byte rows[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+byte rowRemap[8] = {0, 1, 2, 3, 5, 4, 7, 6};
+byte remap[8][8] = {
+  {7, 5, 4, 1, 0, 2, 3, 6},
+  {7, 4, 3, 0, 1, 2, 5, 6},
+  {6, 3, 2, 1, 0, 4, 5, 7},
+  {3, 5, 2, 0, 1, 4, 6, 7},
+  {5, 1, 0, 7, 6, 2, 4, 3},
+  {6, 1, 7, 0, 4, 3, 5, 2},
+  {4, 3, 5, 2, 6, 1, 7, 0},
+  {0, 7, 1, 6, 2, 5, 4, 3}
+};
+byte layers = 0;
+int layerRemap[8] = {3, 6, 7, 4, 5, 1, 2, 0};
+
+void setup(){
+  pinMode(SRCLK, OUTPUT);
+  pinMode(RCLK, OUTPUT); 
+  pinMode(SER, OUTPUT); 
+  pinMode(SRCLK2, OUTPUT);
+  pinMode(RCLK2, OUTPUT); 
+  pinMode(SER2, OUTPUT); 
+  Serial.begin(9600);
+}
+
+void render(int iterations){
+  for(int i=0; i<iterations; i++)
+  {
+    renderFrame();
+  }
+}
+
+void renderFrame() {
+  for(int z=0; z<8; z++)
+  {
+    layers = 0;  // Turn off all layers
+    updateShiftRegister(); //force all layers off to avoid ghosting
+
+    //clear row data
+    for(int i=0; i<8; i++)
+    {
+      rows[i] = 0;
+    }
+
+    //build row data for current layer
+    for(int x=0; x<8; x++)
+    {
+      for(int y=0; y<8; y++)
+      {
+        if (frame[x][y] & (1 << z))
+        {
+          bitSet(rows[rowRemap[x]], remap[rowRemap[x]][y]);
+        }
+      }
+    }
+
+    //enable current layer
+    layers = 0;
+    bitSet(layers, layerRemap[z]);
+    updateShiftRegister(); //updates row and layer together
+    delayMicroseconds(20);  //delay for persistence, adjust as needed
+  }
+}
+
+//takes coordinates and lights up that led
+void set(int x, int y, int z){
+  frame[x][y] |= (1 << z);
+}
+
+void clear(int x, int y, int z){
+  frame[x][y] &= ~(1 << z);
+}
+
+void clearCube(){
+  for(int x=0; x<8; x++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+}
+
+void testPlanes(){
+  int timing = 50;
+
+  //xy-plane
+  for(int z=0; z<8; z++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int x=0; x<8; x++)
+    {
+      for(int y=0; y<8; y++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+  for(int z=6; z>=0; z--)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int x=0; x<8; x++)
+    {
+      for(int y=0; y<8; y++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+
+  //xz-plane
+  for(int y=0; y<8; y++)
+  {
+    for(int z=0; z<8; z++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int z=0; z<8; z++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+  for(int y=6; y>=0; y--)
+  {
+    for(int z=0; z<8; z++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int z=0; z<8; z++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+
+  //yz-plane
+  for(int x=0; x<8; x++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+  for(int x=6; x>=0; x--)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        set(x,y,z);
+      }
+    }
+    render(timing);
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        clear(x,y,z);
+      }
+    }
+  }
+
+}
+
+
+
+struct drop{
+  int x;
+  int y;
+  int z;
+  int renderTime;
+
+  drop(); //default constructor
+  drop(int time); //custom constructor
+  void initiate();
+  void update();
+};
+drop::drop(){
+  x = y = z = 0;
+  renderTime = 0;
+}
+drop::drop(int time){
+  x = random(8);
+  y = random(8);
+  z = 7;
+  renderTime = time;
+  set(x,y,z);
+  render(renderTime);
+}
+void drop::update(){
+  clear(x,y,z); //clear prev drop location first, then update location to be one layer lower
+  z--;
+  set(x,y,z);
+  render(renderTime);
+}
+
+
+class queue{
+  private:
+    drop* items_;
+    unsigned int head_;
+    unsigned int tail_;
+    unsigned int capacity_;
+    unsigned int size_;
+  public:
+    queue(unsigned int capacity);
+    ~queue();
+    int getCap();
+    int getHead();
+    bool enqueue(drop value, int renderTime);
+    drop dequeue();
+    drop peek();
+    void updateAllDrops();
+};
+queue::queue(unsigned int capacity){
+  capacity_ = capacity;
+  items_ = new drop[capacity_];
+  head_ = 0;
+  tail_ = 0;
+  size_ = 0;
+}
+queue::~queue(){
+  delete [] items_;
+}
+bool queue::enqueue(drop value, int renderTime){
+  if(size_ == capacity_)
+  {
+    return false;
+  }
+  if(tail_ == capacity_)
+  {
+    items_[0] = value;
+  }
+  else
+  {
+    items_[tail_] = value;
+  }
+  tail_ = (tail_ + 1) % capacity_;
+  size_++;
+  return true;
+}
+drop queue::dequeue(){
+  if(size_ == 0)
+  {
+    return drop(0);
+  }
+  drop temp = items_[head_];
+  clear(items_[head_].x, items_[head_].y, items_[head_].z); //delete drop when it reaches bottom (note, do not set to 0, or the drop will remain at the bottom)
+  head_ = (head_ + 1) % capacity_;
+  size_--;
+  return temp;
+}
+drop queue::peek(){
+  if(size_ == 0)
+  {
+    return drop(0);
+  }
+  return items_[head_];
+}
+int queue::getCap(){
+  return capacity_;
+}
+int queue::getHead(){
+  return head_;
+}
+void queue::updateAllDrops(){
+  for(int i=0; i<capacity_; i++)
+  {
+    items_[i].update(); //sends each drop down a layer
+  }
+}
+
+
+void rain(int iterations, int speed){ //speed 5
+  clearCube();
+  queue dropList(8); //creates queue of capacity 8
+
+  for(int i=0; i<iterations; i++)
+  {
+    drop randomDrop(speed);
+    dropList.enqueue(randomDrop, randomDrop.renderTime);
+    dropList.updateAllDrops();
+    if(dropList.peek().z == 0)
+    {
+      dropList.dequeue();
+    }
+  }
+}
+
+void randomGenerate(int renderTime){ //renderTime: 5 fast
+  int count = 0;
+  int tempFrame[8][8][8] = {0};
+  bool full = false;
+  while(!full)
+  {
+    int x = random(8);
+    int y = random(8);
+    int z = random(8);
+    if(tempFrame[x][y][z] == 0)
+    {
+      tempFrame[x][y][z] = 1;
+      set(x,y,z);
+      render(renderTime);
+      count++;
+      Serial.println(count);
+    }
+    if(count == 510)
+    {
+      full = true;
+    }
+  }
+
+  count = 0;
+  bool empty = false;
+  while(!empty)
+  {
+    int x = random(8);
+    int y = random(8);
+    int z = random(8);
+    if(tempFrame[x][y][z] == 1)
+    {
+      tempFrame[x][y][z] = 0;
+      clear(x,y,z);
+      render(renderTime);
+      count++;
+      Serial.println(count);
+    }
+    if(count == 510)
+    {
+      empty == true;
+      break;
+    }
+  }
+  
+}
+
+void drawCubeFrame(int min, int max) {
+  for (int x = min; x <= max; x++) {
+    for (int y = min; y <= max; y++) {
+      for (int z = min; z <= max; z++) {
+        //Only draw outer shell
+        if (x == min || x == max || y == min || y == max || z == min || z == max) {
+          set(x, y, z);
+        }
+      }
+    }
+  }
+}
+
+void concentricCubes(int renderTime) { //renderTime: 30 fast, 100 med, 500 slow
+  drawCubeFrame(3, 4); // Smallest inner cube
+  render(renderTime);
+  clearCube();
+  drawCubeFrame(2, 5);
+  render(renderTime);
+  clearCube();
+  drawCubeFrame(1, 6);
+  render(renderTime);
+  clearCube();
+  drawCubeFrame(0, 7); // Largest outer cube
+  render(renderTime);
+  clearCube();
+  drawCubeFrame(1, 6);
+  render(renderTime);
+  clearCube();
+  drawCubeFrame(2, 5);
+  render(renderTime);
+  clearCube();
+}
+
+
+void wave(char axis) {
+  float time = 0;
+  float speed = 0.15;      // Controls wave speed
+  float amplitude = 3.5;   // Full vertical range
+  float frequency = 0.5;   // Controls how wide the wave is
+  int renderTime = 30;     // Adjust for smoother/faster animation
+
+  if(axis == 'z')
+  {
+    for(int i=0; i<200; i++){
+      clearCube();
+      for (int x = 0; x < 8; x++) {
+        for (int y = 0; y < 8; y++) {
+          float dx = x - 3.5;
+          float dy = y - 3.5;
+          float distance = sqrt(dx * dx + dy * dy);
+
+          // Sinusoidal wave based on radial distance from center
+          float height = 3.5 + amplitude * sin(frequency * distance - speed * time);
+
+          // Round height to nearest z-layer
+          int z = round(height);
+          z = constrain(z, 0, 7); // ensure z stays within valid range
+
+          set(x, y, z);
+        }
+      }
+      render(renderTime);
+      time += 1;
+    }
+  }
+
+  else if(axis == 'y')
+  {
+    for(int i=0; i<200; i++){
+      clearCube();
+      for (int x = 0; x < 8; x++) {
+        for (int z = 0; z < 8; z++) {
+          float dx = x - 3.5;
+          float dz = z - 3.5;
+          float distance = sqrt(dx * dx + dz * dz);
+
+          // Sinusoidal wave based on radial distance from center
+          float height = 3.5 + amplitude * sin(frequency * distance - speed * time);
+
+          // Round height to nearest z-layer
+          int y = round(height);
+          y = constrain(y, 0, 7); // ensure z stays within valid range
+
+          set(x, y, z);
+        }
+      }
+      render(renderTime);
+      time += 1;
+    }
+  }
+  else if(axis == 'x')
+  {
+    for(int i=0; i<200; i++){
+      clearCube();
+      for (int z = 0; z < 8; z++) {
+        for (int y = 0; y < 8; y++) {
+          float dz = z - 3.5;
+          float dy = y - 3.5;
+          float distance = sqrt(dz * dz + dy * dy);
+
+          // Sinusoidal wave based on radial distance from center
+          float height = 3.5 + amplitude * sin(frequency * distance - speed * time);
+
+          // Round height to nearest z-layer
+          int x = round(height);
+          x = constrain(x, 0, 7); // ensure z stays within valid range
+
+          set(x, y, z);
+        }
+      }
+      render(renderTime);
+      time += 1;
+    }
+  }
+
+}
+
+void wave2() {
+  float time = 0;
+  float speed = 0.2;        // Speed of the wave's movement
+  float amplitude = 3.5;    // Height range from center (0-7 layers)
+  float frequency = 0.4;    // Wave length
+  int renderTime = 30;      // Delay between frames
+
+  for (int t = 0; t < 200; t++) {
+    clearCube();
+
+    for (int x = 0; x < 8; x++) {
+      for (int y = 0; y < 8; y++) {
+        // Compute the wave's height at this x and time
+        float height = 3.5 + amplitude * sin(frequency * x - speed * time);
+
+        // Convert to integer Z position
+        int z = round(height);
+        z = constrain(z, 0, 7); // Clamp z to valid range
+
+        set(x, y, z); // Light up the LED at the calculated position
+      }
+    }
+
+    render(renderTime);
+    time += 1;
+  }
+}
+
+void fireworks() {
+  clearCube();
+
+  // Launch point near center
+  int startX = random(2, 6);
+  int startY = random(2, 6);
+  int peakZ = random(5, 7);
+
+  int renderTime = 40;
+
+  // Step 1: Launch rocket upward
+  for (int z = 0; z <= peakZ; z++) {
+    clearCube();
+    set(startX, startY, z);
+    render(renderTime);
+  }
+
+  // Step 2: Explosion — spawn all particles at once
+  const int numParticles = 30;
+  float xPos[numParticles];
+  float yPos[numParticles];
+  float zPos[numParticles];
+
+  float xVel[numParticles];
+  float yVel[numParticles];
+  float zVel[numParticles];
+
+  for (int i = 0; i < numParticles; i++) {
+    xPos[i] = startX;
+    yPos[i] = startY;
+    zPos[i] = peakZ;
+
+    // Random velocity using spherical coordinates
+    float theta = random(0, 628) / 100.0; // 0 to 2π
+    float phi = random(0, 314) / 100.0;   // 0 to π
+    float speed = random(5, 15) / 10.0;   // speed range: 0.5 to 1.5
+
+    xVel[i] = speed * sin(phi) * cos(theta);
+    yVel[i] = speed * sin(phi) * sin(theta);
+    zVel[i] = speed * cos(phi);
+  }
+
+  // Step 3: Animate explosion
+  int steps = 7;
+  for (int step = 0; step < steps; step++) {
+    clearCube();
+
+    for (int i = 0; i < numParticles; i++) {
+      xPos[i] += xVel[i];
+      yPos[i] += yVel[i];
+      zPos[i] += zVel[i];
+
+      int x = round(xPos[i]);
+      int y = round(yPos[i]);
+      int z = round(zPos[i]);
+
+      if (x >= 0 && x < 8 && y >= 0 && y < 8 && z >= 0 && z < 8) {
+        set(x, y, z);
+      }
+    }
+
+    render(renderTime);
+  }
+
+  // Optional fade-out
+  for (int i = 0; i < 3; i++) {
+    clearCube();
+    render(60);
+  }
+}
+
+
+
+void loop() {
+  testPlanes();
+  testPlanes();
+  rain(150, 5);
+  randomGenerate(5);
+  randomGenerate(5);
+  concentricCubes(100);
+  concentricCubes(100);
+  concentricCubes(100);
+  wave('z');
+  wave('y');
+  wave('x');
+  wave2();
+  for(int i=0; i<7; i++)
+  {
+    fireworks();
+  }
+}
+
+void updateShiftRegister() {
+  digitalWrite(RCLK, LOW);
+  for(int i=0; i<8; i++)
+  {
+    shiftOut(SER, SRCLK, LSBFIRST, rows[i]);
+  }
+  digitalWrite(RCLK, HIGH);
+
+  digitalWrite(RCLK2, LOW);
+  shiftOut(SER2, SRCLK2, LSBFIRST, layers);
+  digitalWrite(RCLK2, HIGH);
+}
