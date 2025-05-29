@@ -115,6 +115,7 @@ void a(int renderTime, int y)
   set(4,y,3);
   set(5,y,3);
   render(renderTime);
+  clearCube();
 }
 void b(int renderTime, int y)
 {
@@ -148,6 +149,8 @@ void b(int renderTime, int y)
   set(2,y,7);
   set(1,y,7);
   render(renderTime);
+  clearCube();
+
 }
 void c(int renderTime, int y)
 {
@@ -170,6 +173,8 @@ void c(int renderTime, int y)
   set(6,y,6);
   set(7,y,5);
   render(renderTime);
+  clearCube();
+
 }
 void d(int renderTime, int y)
 {
@@ -197,6 +202,7 @@ void d(int renderTime, int y)
   set(2,y,0);
   set(1,y,0);
   render(renderTime);
+  clearCube();
 }
 void e(int renderTime, int y)
 {
@@ -228,6 +234,7 @@ void e(int renderTime, int y)
   set(6,y,7);
   set(7,y,7);
   render(renderTime);
+  clearCube();
 }
 void f(int renderTime, int y)
 {
@@ -249,6 +256,7 @@ void f(int renderTime, int y)
   set(4,y,4);
   set(5,y,4);
   render(renderTime);
+  clearCube();
 }
 void g(int renderTime, int y)
 {
@@ -276,6 +284,7 @@ void g(int renderTime, int y)
   set(5,y,3);
   set(4,y,3);
   render(renderTime);
+  clearCube();
 }
 void h(int renderTime, int y)
 {
@@ -300,6 +309,7 @@ void h(int renderTime, int y)
   set(6,y,6);
   set(6,y,7);
   render(renderTime);
+  clearCube();
 }
 void i(int renderTime, int y)
 {
@@ -372,51 +382,442 @@ void k(int renderTime, int y)
 }
 void l(int renderTime, int y)
 {
-  set(1,0,7);
-  set(1,0,6);
-  set(1,0,5);
-  set(1,0,4);
-  set(1,0,3);
-  set(1,0,2);
-  set(1,0,1);
-  set(1,0,0);
-  set(2,0,0);
-  set(3,0,0);
-  set(4,0,0);
-  set(5,0,0);
+  set(1,y,7);
+  set(1,y,6);
+  set(1,y,5);
+  set(1,y,4);
+  set(1,y,3);
+  set(1,y,2);
+  set(1,y,1);
+  set(1,y,0);
+  set(2,y,0);
+  set(3,y,0);
+  set(4,y,0);
+  set(5,y,0);
   render(renderTime);
 }
 void m(int renderTime, int y)
 {
-  set(1,0,7);
-  set(1,0,6);
-  set(1,0,5);
-  set(1,0,4);
-  set(1,0,3);
-  set(1,0,2);
-  set(1,0,1);
-  set(1,0,0);
-  set(2,0,6);
-  set(3,0,7);
-  set(4,0,6);
-  set(4,0,5);
-  set(4,0,4);
-  set(4,0,3);
-  set(4,0,2);
-  set(5,0,7);
-  set(6,0,6);
-  set(7,0,5);
-  set(7,0,4);
-  set(7,0,3);
-  set(7,0,2);
-  set(7,0,1);
-  set(7,0,0);
+  set(1,y,7);
+  set(1,y,6);
+  set(1,y,5);
+  set(1,y,4);
+  set(1,y,3);
+  set(1,y,2);
+  set(1,y,1);
+  set(1,y,0);
+  set(2,y,6);
+  set(3,y,7);
+  set(4,y,6);
+  set(4,y,5);
+  set(4,y,4);
+  set(4,y,3);
+  set(4,y,2);
+  set(5,y,7);
+  set(6,y,6);
+  set(7,y,5);
+  set(7,y,4);
+  set(7,y,3);
+  set(7,y,2);
+  set(7,y,1);
+  set(7,y,0);
+  render(renderTime);
+}
+void n(int renderTime, int y)
+{
+  set(1,y,0);
+  set(1,y,1);
+  set(1,y,2);
+  set(1,y,3);
+  set(1,y,4);
+  set(1,y,5);
+  set(1,y,6);
+  set(1,y,7);
+  set(2,y,6);
+  set(3,y,6);
+  set(4,y,6);
+  set(5,y,6);
+  set(6,y,5);
+  set(6,y,4);
+  set(6,y,3);
+  set(6,y,2);
+  set(6,y,1);
+  set(6,y,0);
+  render(renderTime);
+}
+void o(int renderTime, int y)
+{
+  set(2,y,0);
+  set(3,y,0);
+  set(4,y,0);
+  set(5,y,0);
+  set(6,y,1);
+  set(7,y,2);
+  set(7,y,3);
+  set(7,y,4);
+  set(7,y,5);
+  set(6,y,6);
+  set(5,y,7);
+  set(4,y,7);
+  set(3,y,7);
+  set(2,y,7);
+  set(1,y,6);
+  set(0,y,5);
+  set(0,y,4);
+  set(0,y,3);
+  set(0,y,2);
+  set(1,y,1);
+  render(renderTime);
+}
+void p(int renderTime, int y)
+{
+  set(1,y,0);
+  set(1,y,1);
+  set(1,y,2);
+  set(1,y,3);
+  set(1,y,4);
+  set(1,y,5);
+  set(1,y,6);
+  set(1,y,7);
+  set(2,y,7);
+  set(3,y,7);
+  set(4,y,7);
+  set(5,y,7);
+  set(6,y,6);
+  set(6,y,5);
+  set(6,y,4);
+  set(5,y,3);
+  set(4,y,3);
+  set(3,y,3);
+  set(2,y,3);
+  set(1,y,3);
+  render(renderTime);
+}
+void q(int renderTime, int y)
+{
+  set(2,y,0);
+  set(3,y,0);
+  set(4,y,0);
+  set(5,y,0);
+  set(6,y,1);
+  set(7,y,2);
+  set(7,y,3);
+  set(7,y,4);
+  set(7,y,5);
+  set(6,y,6);
+  set(5,y,7);
+  set(4,y,7);
+  set(3,y,7);
+  set(2,y,7);
+  set(1,y,6);
+  set(0,y,5);
+  set(0,y,4);
+  set(0,y,3);
+  set(0,y,2);
+  set(1,y,1);
+  set(4,y,3);
+  set(5,y,2);
+  set(7,y,0);
+  render(renderTime);
+}
+void r(int renderTime, int y)
+{
+  set(1,y,0);
+  set(1,y,1);
+  set(1,y,2);
+  set(1,y,3);
+  set(1,y,4);
+  set(1,y,5);
+  set(1,y,6);
+  set(1,y,7);
+  set(2,y,7);
+  set(3,y,7);
+  set(4,y,7);
+  set(5,y,7);
+  set(6,y,6);
+  set(6,y,5);
+  set(6,y,4);
+  set(5,y,3);
+  set(4,y,3);
+  set(3,y,3);
+  set(2,y,3);
+  set(1,y,3);
+  set(4,y,2);
+  set(5,y,1);
+  set(6,y,0);
+  render(renderTime);
+}
+void s(int renderTime, int y)
+{
+  set(7,y,5);
+  set(7,y,6);
+  set(6,y,7);
+  set(5,y,7);
+  set(4,y,7);
+  set(3,y,7);
+  set(2,y,7);
+  set(1,y,6);
+  set(0,y,5);
+  set(0,y,4);
+  set(1,y,3);
+  set(2,y,3);
+  set(3,y,3);
+  set(4,y,3);
+  set(5,y,3);
+  set(6,y,3);
+  set(7,y,2);
+  set(7,y,1);
+  set(6,y,0);
+  set(5,y,0);
+  set(4,y,0);
+  set(3,y,0);
+  set(2,y,0);
+  set(1,y,0);
+  set(0,y,1);
+  render(renderTime);
+}
+void t(int renderTime, int y)
+{
+  set(0,y,7);
+  set(1,y,7);
+  set(2,y,7);
+  set(3,y,7);
+  set(4,y,7);
+  set(5,y,7);
+  set(6,y,7);
+  set(7,y,7);
+  set(3,y,6);
+  set(4,y,6);
+  set(3,y,5);
+  set(4,y,5);
+  set(3,y,4);
+  set(4,y,4);
+  set(3,y,3);
+  set(4,y,3);
+  set(3,y,2);
+  set(4,y,2);
+  set(3,y,1);
+  set(4,y,1);
+  set(3,y,0);
+  set(4,y,0);
+  render(renderTime);
+}
+void u(int renderTime, int y)
+{
+  set(1,y,7);
+  set(1,y,6);
+  set(1,y,5);
+  set(1,y,4);
+  set(1,y,3);
+  set(1,y,2);
+  set(1,y,1);
+  set(2,y,0);
+  set(3,y,0);
+  set(4,y,0);
+  set(5,y,0);
+  set(6,y,1);
+  set(6,y,2);
+  set(6,y,3);
+  set(6,y,4);
+  set(6,y,5);
+  set(6,y,6);
+  set(6,y,7);
+  render(renderTime);
+}
+void v(int renderTime, int y)
+{
+  set(0,y,7);
+  set(1,y,6);
+  set(1,y,5);
+  set(1,y,4);
+  set(2,y,3);
+  set(2,y,2);
+  set(3,y,1);
+  set(3,y,0);
+  set(4,y,0);
+  set(4,y,1);
+  set(5,y,2);
+  set(5,y,3);
+  set(6,y,4);
+  set(6,y,5);
+  set(6,y,6);
+  set(7,y,7);
+  render(renderTime);
+}
+void w(int renderTime, int y)
+{
+  set(0,y,7);
+  set(0,y,6);
+  set(0,y,5);
+  set(0,y,4);
+  set(1,y,3);
+  set(1,y,2);
+  set(1,y,1);
+  set(1,y,0);
+  set(2,y,1);
+  set(3,y,2);
+  set(3,y,3);
+  set(3,y,4);
+  set(4,y,4);
+  set(4,y,3);
+  set(4,y,2);
+  set(5,y,1);
+  set(6,y,0);
+  set(6,y,1);
+  set(6,y,2);
+  set(6,y,3);
+  set(7,y,4);
+  set(7,y,5);
+  set(7,y,6);
+  set(7,y,7);
+  render(renderTime);
+}
+void x(int renderTime, int y)
+{
+  set(0,y,7);
+  set(1,y,6);
+  set(2,y,5);
+  set(3,y,4);
+  set(4,y,3);
+  set(5,y,2);
+  set(6,y,1);
+  set(7,y,0);
+  set(0,y,0);
+  set(1,y,1);
+  set(2,y,2);
+  set(3,y,3);
+  set(4,y,4);
+  set(5,y,5);
+  set(6,y,6);
+  set(7,y,7);
+  render(renderTime);
+}
+void y(int renderTime, int y)
+{
+  set(0,y,7);
+  set(1,y,6);
+  set(2,y,5);
+  set(3,y,4);
+  set(4,y,4);
+  set(5,y,5);
+  set(6,y,6);
+  set(7,y,7);
+  set(3,y,3);
+  set(4,y,3);
+  set(3,y,2);
+  set(4,y,2);
+  set(3,y,1);
+  set(4,y,1);
+  set(3,y,0);
+  set(4,y,0);
+  render(renderTime);
+}
+void z(int renderTime, int y)
+{
+  set(7,y,7);
+  set(6,y,7);
+  set(5,y,7);
+  set(4,y,7);
+  set(3,y,7);
+  set(2,y,7);
+  set(1,y,7);
+  set(0,y,7);
+  set(1,y,6);
+  set(2,y,5);
+  set(3,y,4);
+  set(4,y,3);
+  set(5,y,2);
+  set(6,y,1);
+  set(7,y,0);
+  set(6,y,0);
+  set(5,y,0);
+  set(4,y,0);
+  set(3,y,0);
+  set(2,y,0);
+  set(1,y,0);
+  set(0,y,0);
   render(renderTime);
 }
 
+void text()
+{
+  String text = "abcdcba";
+  for(int i=0; i<text.length(); i++)
+  {
+    char ch = text.charAt(i);
+    if(isAlpha(ch))
+    {
+      displayText(ch);
+    }
+  }
+}
+
+void displayText(char ch)
+{
+  switch(tolower(ch))
+  {
+    case 'a':
+      a(1000,0);
+      break;
+    case 'b':
+      b(1000,0);
+      break;
+    case 'c':
+      c(1000,0);
+      break;
+    case 'd':
+      d(1000,0);
+      break;
+    case 'e':
+      e(1000,0);
+      break;
+    case 'e':
+      f(1000,0);
+      break;
+    case 'e':
+      g(1000,0);
+      break;
+    case 'e':
+      h(1000,0);
+      break;
+    case 'e':
+      i(1000,0);
+      break;
+    case 'e':
+      j(1000,0);
+      break;
+    case 'e':
+      k(1000,0);
+      break;
+    case 'e':
+      l(1000,0);
+      break;
+    case 'e':
+      m(1000,0);
+      break;
+    case 'e':
+      n(1000,0);
+      break;
+    case 'e':
+      o(1000,0);
+      break;
+    case 'e':
+      p(1000,0);
+      break;
+    case 'e':
+      q(1000,0);
+      break;
+    case 'e':
+      r(1000,0);
+      break;
+    case 'e':
+      s(1000,0);
+      break;
+  }
+}
 
 void loop() {
-  m(500, 0);
+  text();
 }
 
 void updateShiftRegister() {
