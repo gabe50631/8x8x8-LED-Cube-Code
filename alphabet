@@ -250,9 +250,173 @@ void f(int renderTime, int y)
   set(5,y,4);
   render(renderTime);
 }
+void g(int renderTime, int y)
+{
+  set(7,y,5);
+  set(7,y,6);
+  set(6,y,7);
+  set(5,y,7);
+  set(4,y,7);
+  set(3,y,7);
+  set(2,y,7);
+  set(1,y,6);
+  set(0,y,5);
+  set(0,y,4);
+  set(0,y,3);
+  set(0,y,2);
+  set(1,y,1);
+  set(2,y,0);
+  set(3,y,0);
+  set(4,y,0);
+  set(5,y,0);
+  set(6,y,1);
+  set(7,y,2);
+  set(7,y,3);
+  set(6,y,3);
+  set(5,y,3);
+  set(4,y,3);
+  render(renderTime);
+}
+void h(int renderTime, int y)
+{
+  set(1,y,0);
+  set(1,y,1);
+  set(1,y,2);
+  set(1,y,3);
+  set(1,y,4);
+  set(1,y,5);
+  set(1,y,6);
+  set(1,y,7);
+  set(2,y,3);
+  set(3,y,3);
+  set(4,y,3);
+  set(5,y,3);
+  set(6,y,0);
+  set(6,y,1);
+  set(6,y,2);
+  set(6,y,3);
+  set(6,y,4);
+  set(6,y,5);
+  set(6,y,6);
+  set(6,y,7);
+  render(renderTime);
+}
+void i(int renderTime, int y)
+{
+  set(1,y,0);
+  set(2,y,0);
+  set(3,y,0);
+  set(4,y,0);
+  set(5,y,0);
+  set(6,y,0);
+  set(1,y,7);
+  set(2,y,7);
+  set(3,y,7);
+  set(4,y,7);
+  set(5,y,7);
+  set(6,y,7);
+  set(3,y,1);
+  set(4,y,1);  
+  set(3,y,2);
+  set(4,y,2);  
+  set(3,y,3);
+  set(4,y,3);  
+  set(3,y,4);
+  set(4,y,4);  
+  set(3,y,5);
+  set(4,y,5);  
+  set(3,y,6);
+  set(4,y,6);
+  render(renderTime);
+}
+void j(int renderTime, int y)
+{
+  set(1,y,7);
+  set(2,y,7);
+  set(3,y,7);
+  set(4,y,7);
+  set(5,y,7);
+  set(6,y,7);
+  set(4,y,6);
+  set(4,y,5);
+  set(4,y,4);
+  set(4,y,3);
+  set(4,y,2);
+  set(4,y,1);
+  set(3,y,0);
+  set(2,y,0);
+  set(1,y,0);
+  set(0,y,1);
+  set(0,y,2);
+  render(renderTime);
+}
+void k(int renderTime, int y)
+{
+  set(1,y,0);
+  set(1,y,1);
+  set(1,y,2);
+  set(1,y,3);
+  set(1,y,4);
+  set(1,y,5);
+  set(1,y,6);
+  set(1,y,7);
+  set(2,y,3);
+  set(3,y,3);
+  set(4,y,2);
+  set(5,y,1);
+  set(6,y,0);
+  set(4,y,4);
+  set(5,y,5);
+  set(6,y,6);
+  render(renderTime);
+}
+void l(int renderTime, int y)
+{
+  set(1,0,7);
+  set(1,0,6);
+  set(1,0,5);
+  set(1,0,4);
+  set(1,0,3);
+  set(1,0,2);
+  set(1,0,1);
+  set(1,0,0);
+  set(2,0,0);
+  set(3,0,0);
+  set(4,0,0);
+  set(5,0,0);
+  render(renderTime);
+}
+void m(int renderTime, int y)
+{
+  set(1,0,7);
+  set(1,0,6);
+  set(1,0,5);
+  set(1,0,4);
+  set(1,0,3);
+  set(1,0,2);
+  set(1,0,1);
+  set(1,0,0);
+  set(2,0,6);
+  set(3,0,7);
+  set(4,0,6);
+  set(4,0,5);
+  set(4,0,4);
+  set(4,0,3);
+  set(4,0,2);
+  set(5,0,7);
+  set(6,0,6);
+  set(7,0,5);
+  set(7,0,4);
+  set(7,0,3);
+  set(7,0,2);
+  set(7,0,1);
+  set(7,0,0);
+  render(renderTime);
+}
+
 
 void loop() {
-  f(500, 0);
+  m(500, 0);
 }
 
 void updateShiftRegister() {
