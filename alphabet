@@ -338,6 +338,8 @@ void i(int renderTime, int y)
   set(3,y,6);
   set(4,y,6);
   render(renderTime);
+  clearCube();
+
 }
 void j(int renderTime, int y)
 {
@@ -359,6 +361,7 @@ void j(int renderTime, int y)
   set(0,y,1);
   set(0,y,2);
   render(renderTime);
+  clearCube();
 }
 void k(int renderTime, int y)
 {
@@ -379,6 +382,7 @@ void k(int renderTime, int y)
   set(5,y,5);
   set(6,y,6);
   render(renderTime);
+  clearCube();
 }
 void l(int renderTime, int y)
 {
@@ -395,6 +399,7 @@ void l(int renderTime, int y)
   set(4,y,0);
   set(5,y,0);
   render(renderTime);
+  clearCube();
 }
 void m(int renderTime, int y)
 {
@@ -422,6 +427,7 @@ void m(int renderTime, int y)
   set(7,y,1);
   set(7,y,0);
   render(renderTime);
+  clearCube();
 }
 void n(int renderTime, int y)
 {
@@ -444,6 +450,7 @@ void n(int renderTime, int y)
   set(6,y,1);
   set(6,y,0);
   render(renderTime);
+  clearCube();
 }
 void o(int renderTime, int y)
 {
@@ -468,6 +475,7 @@ void o(int renderTime, int y)
   set(0,y,2);
   set(1,y,1);
   render(renderTime);
+  clearCube();
 }
 void p(int renderTime, int y)
 {
@@ -492,6 +500,7 @@ void p(int renderTime, int y)
   set(2,y,3);
   set(1,y,3);
   render(renderTime);
+  clearCube();
 }
 void q(int renderTime, int y)
 {
@@ -519,6 +528,7 @@ void q(int renderTime, int y)
   set(5,y,2);
   set(7,y,0);
   render(renderTime);
+  clearCube();
 }
 void r(int renderTime, int y)
 {
@@ -546,6 +556,7 @@ void r(int renderTime, int y)
   set(5,y,1);
   set(6,y,0);
   render(renderTime);
+  clearCube();
 }
 void s(int renderTime, int y)
 {
@@ -575,6 +586,7 @@ void s(int renderTime, int y)
   set(1,y,0);
   set(0,y,1);
   render(renderTime);
+  clearCube();
 }
 void t(int renderTime, int y)
 {
@@ -601,6 +613,7 @@ void t(int renderTime, int y)
   set(3,y,0);
   set(4,y,0);
   render(renderTime);
+  clearCube();
 }
 void u(int renderTime, int y)
 {
@@ -623,6 +636,7 @@ void u(int renderTime, int y)
   set(6,y,6);
   set(6,y,7);
   render(renderTime);
+  clearCube();
 }
 void v(int renderTime, int y)
 {
@@ -643,6 +657,7 @@ void v(int renderTime, int y)
   set(6,y,6);
   set(7,y,7);
   render(renderTime);
+  clearCube();
 }
 void w(int renderTime, int y)
 {
@@ -671,6 +686,7 @@ void w(int renderTime, int y)
   set(7,y,6);
   set(7,y,7);
   render(renderTime);
+  clearCube();
 }
 void x(int renderTime, int y)
 {
@@ -691,6 +707,7 @@ void x(int renderTime, int y)
   set(6,y,6);
   set(7,y,7);
   render(renderTime);
+  clearCube();
 }
 void y(int renderTime, int y)
 {
@@ -711,6 +728,7 @@ void y(int renderTime, int y)
   set(3,y,0);
   set(4,y,0);
   render(renderTime);
+  clearCube();
 }
 void z(int renderTime, int y)
 {
@@ -737,87 +755,117 @@ void z(int renderTime, int y)
   set(1,y,0);
   set(0,y,0);
   render(renderTime);
+  clearCube();
 }
 
-void text()
+void text(String input, int renderTime)
 {
-  String text = "abcdcba";
-  for(int i=0; i<text.length(); i++)
+  for(int i=0; i<input.length(); i++)
   {
-    char ch = text.charAt(i);
+    char ch = input.charAt(i);
     if(isAlpha(ch))
     {
-      displayText(ch);
+      displayText(ch, renderTime);
     }
   }
 }
 
-void displayText(char ch)
+void displayText(char ch, int renderTime)
 {
   switch(tolower(ch))
   {
     case 'a':
-      a(1000,0);
+      a(renderTime,0);
       break;
     case 'b':
-      b(1000,0);
+      b(renderTime,0);
       break;
     case 'c':
-      c(1000,0);
+      c(renderTime,0);
       break;
     case 'd':
-      d(1000,0);
+      d(renderTime,0);
       break;
     case 'e':
-      e(1000,0);
+      e(renderTime,0);
       break;
-    case 'e':
-      f(1000,0);
+    case 'f':
+      f(renderTime,0);
       break;
-    case 'e':
-      g(1000,0);
+    case 'g':
+      g(renderTime,0);
       break;
-    case 'e':
-      h(1000,0);
+    case 'h':
+      h(renderTime,0);
       break;
-    case 'e':
-      i(1000,0);
+    case 'i':
+      i(renderTime,0);
       break;
-    case 'e':
-      j(1000,0);
+    case 'j':
+      j(renderTime,0);
       break;
-    case 'e':
-      k(1000,0);
+    case 'k':
+      k(renderTime,0);
       break;
-    case 'e':
-      l(1000,0);
+    case 'l':
+      l(renderTime,0);
       break;
-    case 'e':
-      m(1000,0);
+    case 'm':
+      m(renderTime,0);
       break;
-    case 'e':
-      n(1000,0);
+    case 'n':
+      n(renderTime,0);
       break;
-    case 'e':
-      o(1000,0);
+    case 'o':
+      o(renderTime,0);
       break;
-    case 'e':
-      p(1000,0);
+    case 'p':
+      p(renderTime,0);
       break;
-    case 'e':
-      q(1000,0);
+    case 'q':
+      q(renderTime,0);
       break;
-    case 'e':
-      r(1000,0);
+    case 'r':
+      r(renderTime,0);
       break;
-    case 'e':
-      s(1000,0);
+    case 's':
+      s(renderTime,0);
+      break;
+    case 't':
+      t(renderTime,0);
+      break;
+    case 'u':
+      u(renderTime,0);
+      break;
+    case 'v':
+      v(renderTime,0);
+      break;
+    case 'w':
+      w(renderTime,0);
+      break;
+    case 'x':
+      x(renderTime,0);
+      break;
+    case 'y':
+      y(renderTime,0);
+      break;
+    case 'z':
+      z(renderTime,0);
       break;
   }
 }
 
 void loop() {
-  text();
+  for(int i=7; i>=0; i--)
+  {
+    a(100,i);
+    clearCube();
+  }
+  a(100,0);
+  a(100,0);
+  a(100,0);
+  a(100,0);
+  clearCube();
 }
 
 void updateShiftRegister() {
