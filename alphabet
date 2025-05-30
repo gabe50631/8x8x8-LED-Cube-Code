@@ -775,97 +775,244 @@ void displayText(char ch, int renderTime)
   switch(tolower(ch))
   {
     case 'a':
-      a(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        a(renderTime,i);
+        clearCube();
+      }
+      a(renderTime*4,0);
+      clearCube();
       break;
     case 'b':
-      b(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        b(renderTime,i);
+        clearCube();
+      }
+      b(renderTime*4,0);
+      clearCube();
       break;
     case 'c':
-      c(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        c(renderTime,i);
+        clearCube();
+      }
+      c(renderTime*4,0);
+      clearCube();
       break;
     case 'd':
-      d(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        d(renderTime,i);
+        clearCube();
+      }
+      d(renderTime*4,0);
+      clearCube();
       break;
     case 'e':
-      e(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        e(renderTime,i);
+        clearCube();
+      }
+      e(renderTime*4,0);
+      clearCube();
       break;
     case 'f':
-      f(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        f(renderTime,i);
+        clearCube();
+      }
+      f(renderTime*4,0);
+      clearCube();
       break;
     case 'g':
-      g(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        g(renderTime,i);
+        clearCube();
+      }
+      g(renderTime*4,0);
+      clearCube();
       break;
     case 'h':
-      h(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        h(renderTime,i);
+        clearCube();
+      }
+      h(renderTime*4,0);
+      clearCube();
       break;
     case 'i':
-      i(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        i(renderTime,i);
+        clearCube();
+      }
+      i(renderTime*4,0);
+      clearCube();
       break;
     case 'j':
-      j(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        j(renderTime,i);
+        clearCube();
+      }
+      j(renderTime*4,0);
+      clearCube();
       break;
     case 'k':
-      k(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        k(renderTime,i);
+        clearCube();
+      }
+      k(renderTime*4,0);
+      clearCube();
       break;
     case 'l':
-      l(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        l(renderTime,i);
+        clearCube();
+      }
+      l(renderTime*4,0);
+      clearCube();
       break;
     case 'm':
-      m(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        m(renderTime,i);
+        clearCube();
+      }
+      m(renderTime*4,0);
+      clearCube();
       break;
     case 'n':
-      n(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        n(renderTime,i);
+        clearCube();
+      }
+      n(renderTime*4,0);
+      clearCube();
       break;
     case 'o':
-      o(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        o(renderTime,i);
+        clearCube();
+      }
+      o(renderTime*4,0);
+      clearCube();
       break;
     case 'p':
-      p(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        p(renderTime,i);
+        clearCube();
+      }
+      p(renderTime*4,0);
+      clearCube();
       break;
     case 'q':
-      q(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        q(renderTime,i);
+        clearCube();
+      }
+      q(renderTime*4,0);
+      clearCube();
       break;
     case 'r':
-      r(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        r(renderTime,i);
+        clearCube();
+      }
+      r(renderTime*4,0);
+      clearCube();
       break;
     case 's':
-      s(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        s(renderTime,i);
+        clearCube();
+      }
+      s(renderTime*4,0);
+      clearCube();
       break;
     case 't':
-      t(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        t(renderTime,i);
+        clearCube();
+      }
+      t(renderTime*4,0);
+      clearCube();
       break;
     case 'u':
-      u(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        u(renderTime,i);
+        clearCube();
+      }
+      u(renderTime*4,0);
+      clearCube();
       break;
     case 'v':
-      v(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        v(renderTime,i);
+        clearCube();
+      }
+      v(renderTime*4,0);
+      clearCube();
       break;
     case 'w':
-      w(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        w(renderTime,i);
+        clearCube();
+      }
+      w(renderTime*4,0);
+      clearCube();
       break;
     case 'x':
-      x(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        x(renderTime,i);
+        clearCube();
+      }
+      x(renderTime*4,0);
+      clearCube();
       break;
     case 'y':
-      y(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        y(renderTime,i);
+        clearCube();
+      }
+      y(renderTime*4,0);
+      clearCube();
       break;
     case 'z':
-      z(renderTime,0);
+      for(int i=7; i>=0; i--)
+      {
+        z(renderTime,i);
+        clearCube();
+      }
+      z(renderTime*4,0);
+      clearCube();
       break;
   }
 }
 
 void loop() {
-  for(int i=7; i>=0; i--)
-  {
-    a(100,i);
-    clearCube();
-  }
-  a(100,0);
-  a(100,0);
-  a(100,0);
-  a(100,0);
-  clearCube();
+  text("Hello world");
 }
 
 void updateShiftRegister() {
