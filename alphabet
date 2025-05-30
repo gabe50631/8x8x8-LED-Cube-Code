@@ -311,7 +311,7 @@ void h(int renderTime, int y)
   render(renderTime);
   clearCube();
 }
-void i(int renderTime, int y)
+void i_(int renderTime, int y)
 {
   set(1,y,0);
   set(2,y,0);
@@ -849,10 +849,10 @@ void displayText(char ch, int renderTime)
     case 'i':
       for(int i=7; i>=0; i--)
       {
-        i(renderTime,i);
+        i_(renderTime,i);
         clearCube();
       }
-      i(renderTime*4,0);
+      i_(renderTime*4,0);
       clearCube();
       break;
     case 'j':
@@ -1012,7 +1012,7 @@ void displayText(char ch, int renderTime)
 }
 
 void loop() {
-  text("Hello world");
+  text("Hello world", 40);
 }
 
 void updateShiftRegister() {
