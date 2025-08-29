@@ -94,17 +94,67 @@ class MainActivity : ComponentActivity() {
         Text("Scan & Connect")
       }
 
-      (1..10).forEach { i ->
-        Button(onClick = {
-          if (isConnected) {
-            sendCommand(i.toByte())
-            statusText = "Sent cmd $i"
-          } else {
-            statusText = "Not connected"
-          }
-        }, modifier = Modifier.fillMaxWidth()) {
-          Text("Function $i")
-        }
+      Button(onClick = { if (isConnected) { sendCommand(1); statusText = "Running testPlanes" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Test Planes")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(2); statusText = "Running rain" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Rain")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(3); statusText = "Running randomGenerate" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Random Generate")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(4); statusText = "Running concentricCubes" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Concentric Cubes")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(5); statusText = "Running wave" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Wave (z)")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(6); statusText = "Running wave" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Wave (y)")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(7); statusText = "Running wave" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Wave (x)")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(8); statusText = "Running wave2" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Wave 2.0")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(9); statusText = "Running fireworks" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Fireworks")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(10); statusText = "Running clearCube" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("Clear")
+      }Button(onClick = { if (isConnected) { sendCommand(1); statusText = "Running testPlanes" } },
+      modifier = Modifier.fillMaxWidth()) {
+      Text("testPlanes")
+    }
+
+      Button(onClick = { if (isConnected) { sendCommand(2); statusText = "Running rain" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("rain")
+      }
+
+      Button(onClick = { if (isConnected) { sendCommand(3); statusText = "Running randomGenerate" } },
+        modifier = Modifier.fillMaxWidth()) {
+        Text("randomGenerate")
       }
 
       OutlinedTextField(value = textInput, onValueChange = { textInput = it },
